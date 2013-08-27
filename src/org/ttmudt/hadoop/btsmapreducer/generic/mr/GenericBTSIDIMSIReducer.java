@@ -1,4 +1,4 @@
-package org.ttmudt.hadoop.btsmapreducer;
+package org.ttmudt.hadoop.btsmapreducer.generic.mr;
 
 import junit.framework.Assert;
 import org.apache.commons.collections.map.HashedMap;
@@ -18,7 +18,7 @@ import java.util.Map;
  * Time: 3:05 AM
  * To change this template use File | Settings | File Templates.
  */
-public class BTSIDIMSIReducer extends Reducer<Text, Text, Text, Text> {
+public class GenericBTSIDIMSIReducer extends Reducer<Text, Text, Text, Text> {
     @Override
     public void reduce (Text key, Iterable<Text> values, Context context)
             throws IOException, InterruptedException {
