@@ -10,20 +10,25 @@ import org.ttmudt.hadoop.btsmapreducer.generic.IBTSLogErrorHandler;
  * To change this template use File | Settings | File Templates.
  */
 public class GenericErrorHandler implements IBTSLogErrorHandler {
+
+    private final int COMPLETE_LOG_LENGTH = 61;
+    private final int EXPECTED_BTSID_LENGTH = 10;
+    private final int EXPECTED_IMSI_LENGTH = 15;
+
     @Override
-    public boolean checkCompleteLogLength(String log, int expectedLength) {
-        return log.length() == expectedLength;
+    public boolean checkCompleteLogLength(String log) {
+        return log.length() == COMPLETE_LOG_LENGTH;
     }
 
     @Override
-    public boolean checkValidBTSID(String btsID, int expectedLength) {
-        return btsID.length() == expectedLength;
+    public boolean checkValidBTSID(String btsID) {
+        return btsID.length() == EXPECTED_BTSID_LENGTH;
         //ToDo : implement more for BTSID
     }
 
     @Override
-    public boolean checkValidIMSI(String imsi, int expectedLength) {
-        return (imsi.length() == expectedLength);
+    public boolean checkValidIMSI(String imsi) {
+        return (imsi.length() == EXPECTED_IMSI_LENGTH);
         //ToDo : implement more
     }
 

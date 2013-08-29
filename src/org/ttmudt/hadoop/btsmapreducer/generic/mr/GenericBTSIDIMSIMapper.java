@@ -1,9 +1,9 @@
 package org.ttmudt.hadoop.btsmapreducer.generic.mr;
 
-import org.apache.hadoop.io.IntWritable;
 import org.apache.hadoop.io.LongWritable;
 import org.apache.hadoop.mapreduce.*;
 import org.apache.hadoop.io.Text;
+import org.ttmudt.hadoop.btsmapreducer.generic.errorhandler.GenericErrorHandler;
 
 import java.io.IOException;
 
@@ -32,14 +32,49 @@ public class GenericBTSIDIMSIMapper extends  Mapper<LongWritable, Text, Text, Te
      * @throws InterruptedException
      */
 
+    private GenericErrorHandler genericErrorHandler = new GenericErrorHandler();
+
     @Override
     public void map (LongWritable key, Text value, Context context)
             throws IOException, InterruptedException {
         String line = value.toString();
-        String btsId = line.substring(0,10);
-        String date = line.substring(43,51);
-        String imsi = line.substring(28,43);
-        String timeStamp = line.substring(51,57);
-        context.write(new Text(btsId + date), new Text(imsi+timeStamp));
+        if(genericErrorHandler.checkCompleteLogLength(line))
+        {
+            String btsId = line.substring(0,10);
+            if(genericErrorHandler.checkValidBTSID(btsId)) {
+                String date = line.substring(43,51);
+                if(genericErrorHandler.checkValidDate(date)){
+                    String imsi = line.substring(28,43);
+                    if(genericErrorHandler.checkValidIMSI(imsi)) {
+                        String timeStamp = line.substring(51,57);
+                        if(genericErrorHandler.checkValidTimeStamp(timeStamp)) {
+                            context.write(new Text(btsId + date), new Text(imsi+timeStamp));
+                        }
+                        else {
+                            System.err.println("Wrong timeStamp : " + timeStamp);
+                            context.setStatus("Detected possible corrupt timeStamp : see log.");
+                            //context.getCounter(GenericErr)
+                        }
+                    }
+                    else {
+                        System.err.println("Wrong IMSI :" + imsi);
+                        context.setStatus("Detected possible corrupt imsi : see log.");
+                    }
+                }
+                else {
+                    System.err.println("Wrong date : " + date);
+                    context.setStatus("Detected possible corrupt date : see log.");
+                }
+
+            }
+            else {
+                System.err.println("Wrong BTSID :" + btsId);
+                context.setStatus("Detected possible corrupt BTSID : see log");
+            }
+        }
+        else {
+            System.err.println("Wrong log :" + line);
+            context.setStatus("Detected possible corrupt log : see log");
+        }
     }
 }

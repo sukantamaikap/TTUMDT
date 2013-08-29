@@ -8,9 +8,9 @@ package org.ttmudt.hadoop.btsmapreducer.generic;
  * To change this template use File | Settings | File Templates.
  */
 public interface IBTSLogErrorHandler {
-    public boolean checkCompleteLogLength (String log, int expectedLength);
-    public boolean checkValidBTSID (String btsID, int expectedLength);
-    public boolean checkValidIMSI (String imsi, int expectedLength);
+    public boolean checkCompleteLogLength (String log);
+    public boolean checkValidBTSID (String btsID);
+    public boolean checkValidIMSI (String imsi);
     public boolean checkValidTimeStamp (String timeStamp);
     public boolean checkValidDate (String date);
 }
