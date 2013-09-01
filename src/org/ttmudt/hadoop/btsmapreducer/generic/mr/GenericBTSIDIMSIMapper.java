@@ -24,6 +24,16 @@ public class GenericBTSIDIMSIMapper extends  Mapper<LongWritable, Text, Text, Te
      * Value : IMSI+TimeStamp
      */
 
+    public enum GenericError {
+        WrongLog,
+        WrongBTSID,
+        WrongIMSI,
+        WrongTimeStamp,
+        WrongDate
+    }
+
+    private GenericErrorHandler genericErrorHandler = new GenericErrorHandler();
+
     /**
      * @param key :  BTSID+Date
      * @param value : IMSI+TimeStamp
@@ -31,14 +41,11 @@ public class GenericBTSIDIMSIMapper extends  Mapper<LongWritable, Text, Text, Te
      * @throws IOException
      * @throws InterruptedException
      */
-
-    private GenericErrorHandler genericErrorHandler = new GenericErrorHandler();
-
     @Override
     public void map (LongWritable key, Text value, Context context)
             throws IOException, InterruptedException {
         String line = value.toString();
-        if(genericErrorHandler.checkCompleteLogLength(line))
+        if(genericErrorHandler.checkCompleteLog(line))
         {
             String btsId = line.substring(0,10);
             if(genericErrorHandler.checkValidBTSID(btsId)) {
@@ -53,28 +60,32 @@ public class GenericBTSIDIMSIMapper extends  Mapper<LongWritable, Text, Text, Te
                         else {
                             System.err.println("Wrong timeStamp : " + timeStamp);
                             context.setStatus("Detected possible corrupt timeStamp : see log.");
-                            //context.getCounter(GenericErr)
+                            context.getCounter(GenericError.WrongTimeStamp).increment(1);
                         }
                     }
                     else {
                         System.err.println("Wrong IMSI :" + imsi);
                         context.setStatus("Detected possible corrupt imsi : see log.");
+                        context.getCounter(GenericError.WrongIMSI).increment(1);
                     }
                 }
                 else {
                     System.err.println("Wrong date : " + date);
                     context.setStatus("Detected possible corrupt date : see log.");
+                    context.getCounter(GenericError.WrongDate).increment(1);
                 }
 
             }
             else {
                 System.err.println("Wrong BTSID :" + btsId);
                 context.setStatus("Detected possible corrupt BTSID : see log");
+                context.getCounter(GenericError.WrongBTSID).increment(1);
             }
         }
         else {
             System.err.println("Wrong log :" + line);
             context.setStatus("Detected possible corrupt log : see log");
+            context.getCounter(GenericError.WrongLog).increment(1);
         }
     }
 }
