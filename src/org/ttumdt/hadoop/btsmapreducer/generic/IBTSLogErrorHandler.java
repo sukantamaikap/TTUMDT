@@ -1,4 +1,4 @@
-package org.ttmudt.hadoop.btsmapreducer.generic;
+package org.ttumdt.hadoop.btsmapreducer.generic;
 
 /**
  * Created with IntelliJ IDEA.

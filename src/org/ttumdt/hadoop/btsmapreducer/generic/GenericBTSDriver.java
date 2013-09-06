@@ -1,10 +1,12 @@
-package org.ttmudt.hadoop.btsmapreducer.generic.mr;
+package org.ttumdt.hadoop.btsmapreducer.generic;
 
 import org.apache.hadoop.fs.Path;
 import org.apache.hadoop.io.Text;
 import org.apache.hadoop.mapreduce.Job;
 import org.apache.hadoop.mapreduce.lib.input.FileInputFormat;
 import org.apache.hadoop.mapreduce.lib.output.FileOutputFormat;
+import org.ttumdt.hadoop.btsmapreducer.generic.mr.GenericBTSIDIMSIMapper;
+import org.ttumdt.hadoop.btsmapreducer.generic.mr.GenericBTSIDIMSIReducer;
 
 import java.io.IOException;
 

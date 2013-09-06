@@ -1,6 +1,6 @@
-package org.ttmudt.hadoop.btsmapreducer.generic.errorhandler;
+package org.ttumdt.hadoop.btsmapreducer.generic.errorhandler;
 
-import org.ttmudt.hadoop.btsmapreducer.generic.IBTSLogErrorHandler;
+import org.ttumdt.hadoop.btsmapreducer.generic.IBTSLogErrorHandler;
 
 /**
  * Created with IntelliJ IDEA.

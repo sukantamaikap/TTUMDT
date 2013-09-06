@@ -1,15 +1,11 @@
-package org.ttmudt.hadoop.btsmapreducer.generic.mr;
+package org.ttumdt.hadoop.btsmapreducer.generic.mr;
 
-import junit.framework.Assert;
-import org.apache.commons.collections.map.HashedMap;
-import org.apache.hadoop.io.LongWritable;
 import org.apache.hadoop.io.Text;
 import org.apache.hadoop.mapreduce.Reducer;
 
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
 
 /**
  * Created with IntelliJ IDEA.

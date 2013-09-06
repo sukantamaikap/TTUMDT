@@ -1,9 +1,9 @@
-package org.ttmudt.hadoop.btsmapreducer.generic.mr;
+package org.ttumdt.hadoop.btsmapreducer.generic.mr;
 
 import org.apache.hadoop.io.LongWritable;
 import org.apache.hadoop.mapreduce.*;
 import org.apache.hadoop.io.Text;
-import org.ttmudt.hadoop.btsmapreducer.generic.errorhandler.GenericErrorHandler;
+import org.ttumdt.hadoop.btsmapreducer.generic.errorhandler.GenericErrorHandler;
 
 import java.io.IOException;
 
