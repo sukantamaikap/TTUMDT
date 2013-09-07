@@ -5,13 +5,11 @@ import org.apache.hadoop.hbase.*;
 import org.apache.hadoop.hbase.client.HBaseAdmin;
 
 import java.io.IOException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 
 /**
- * Created with IntelliJ IDEA.
- * User: cloudera
- * Date: 9/6/13
- * Time: 5:37 PM
- * To change this template use File | Settings | File Templates.
+ * Class to create HBase table
  */
 public class BTSLogTrafficLogTableMapper {
     private final String TRAFFICINFOTABLENAME = "TrafficInfo";
@@ -19,8 +17,9 @@ public class BTSLogTrafficLogTableMapper {
 
     public void createTableIfNotCreated ()
             throws IOException {
-        //ToDo : Add Date to the table name; this will make querying easier ???
-        HTableDescriptor htd = new HTableDescriptor(TRAFFICINFOTABLENAME);
+        //Is this a good idea to create separate HBase tables per day ??
+        HTableDescriptor htd = new HTableDescriptor(TRAFFICINFOTABLENAME + "_"+
+                new SimpleDateFormat("yyyy-MM-dd").format(new Date()));
         HColumnDescriptor hcd = new HColumnDescriptor(TRAFFICINFOCOLUMNDESCRIPTOR);
         htd.addFamily(hcd);
 
