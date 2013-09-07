@@ -11,15 +11,15 @@ import java.util.Date;
 /**
  * Class to create HBase table
  */
-public class BTSLogTrafficLogTableMapper {
-    private final String TRAFFICINFOTABLENAME = "TrafficInfo";
-    private final String TRAFFICINFOCOLUMNDESCRIPTOR = "TimeStamp IMSI";
+public class BTSLogTrafficLogTableCreator {
+    private final String TRAFFICINFOTABLENAME = "TrafficLog";
+    private final String TRAFFICINFOCOLUMNDESCRIPTOR = "TimeStampIMSI";
 
-    public void createTableIfNotCreated ()
+    public void createTableIfNotCreated (String dateSuffix)
             throws IOException {
         //Is this a good idea to create separate HBase tables per day ??
         HTableDescriptor htd = new HTableDescriptor(TRAFFICINFOTABLENAME + "_"+
-                new SimpleDateFormat("yyyy-MM-dd").format(new Date()));
+                dateSuffix);
         HColumnDescriptor hcd = new HColumnDescriptor(TRAFFICINFOCOLUMNDESCRIPTOR);
         htd.addFamily(hcd);
 

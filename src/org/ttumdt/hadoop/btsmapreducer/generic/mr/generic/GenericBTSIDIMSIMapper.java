@@ -1,9 +1,10 @@
-package org.ttumdt.hadoop.btsmapreducer.generic.mr;
+package org.ttumdt.hadoop.btsmapreducer.generic.mr.generic;
 
 import org.apache.hadoop.io.LongWritable;
 import org.apache.hadoop.mapreduce.*;
 import org.apache.hadoop.io.Text;
 import org.ttumdt.hadoop.btsmapreducer.generic.errorhandler.GenericErrorHandler;
+import org.ttumdt.hadoop.btsmapreducer.generic.mr.IGenericBTSLog;
 
 import java.io.IOException;
 
@@ -14,7 +15,9 @@ import java.io.IOException;
  * Time: 12:43 AM
  * To change this template use File | Settings | File Templates.
  */
-public class GenericBTSIDIMSIMapper extends  Mapper<LongWritable, Text, Text, Text> {
+public class GenericBTSIDIMSIMapper extends
+        Mapper<LongWritable, Text, Text, Text>
+        implements IGenericBTSLog {
     /**
      * We are assuming the below log format for BTS logs :
      * Header	BTSID	Direction 	Latitude 	Direction 	Longitude 	IMSI 	Date 	TimeStamp 	SignalStrength

@@ -5,8 +5,8 @@ import org.apache.hadoop.io.Text;
 import org.apache.hadoop.mapreduce.Job;
 import org.apache.hadoop.mapreduce.lib.input.FileInputFormat;
 import org.apache.hadoop.mapreduce.lib.output.FileOutputFormat;
-import org.ttumdt.hadoop.btsmapreducer.generic.mr.GenericBTSIDIMSIMapper;
-import org.ttumdt.hadoop.btsmapreducer.generic.mr.GenericBTSIDIMSIReducer;
+import org.ttumdt.hadoop.btsmapreducer.generic.mr.generic.GenericBTSIDIMSIMapper;
+import org.ttumdt.hadoop.btsmapreducer.generic.mr.generic.GenericBTSIDIMSIReducer;
 
 import java.io.IOException;
 
