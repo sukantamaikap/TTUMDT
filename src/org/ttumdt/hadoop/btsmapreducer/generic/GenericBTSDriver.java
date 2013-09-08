@@ -1,6 +1,7 @@
 package org.ttumdt.hadoop.btsmapreducer.generic;
 
 import org.apache.hadoop.fs.Path;
+import org.apache.hadoop.hbase.mapreduce.MultiTableOutputFormat;
 import org.apache.hadoop.io.Text;
 import org.apache.hadoop.mapreduce.Job;
 import org.apache.hadoop.mapreduce.lib.input.FileInputFormat;
@@ -31,9 +32,11 @@ public class GenericBTSDriver {
         conf.setJarByClass(GenericBTSDriver.class);
 
         conf.setMapperClass(GenericBTSIDIMSIMapper.class);
-        conf.setReducerClass(GenericBTSIDIMSIReducer.class);;
+        conf.setReducerClass(GenericBTSIDIMSIReducer.class);
+        conf.setOutputFormatClass(MultiTableOutputFormat.class);
 
         System.exit(conf.waitForCompletion(true)?0:1);
 
     }
 }
+
