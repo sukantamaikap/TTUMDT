@@ -48,6 +48,7 @@ public class GenericBTSIDIMSIMapper extends
     public void map (LongWritable key, Text value, Context context)
             throws IOException, InterruptedException {
         String line = value.toString();
+        //ToDo : Rewrite error handling
         if(genericErrorHandler.checkCompleteLog(line))
         {
             String btsId = line.substring(0,10);

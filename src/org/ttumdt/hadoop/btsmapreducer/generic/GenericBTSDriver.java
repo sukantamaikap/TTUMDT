@@ -11,13 +11,7 @@ import org.ttumdt.hadoop.btsmapreducer.generic.mr.generic.GenericBTSIDIMSIReduce
 
 import java.io.IOException;
 
-/**
- * Created with IntelliJ IDEA.
- * User: cloudera
- * Date: 8/25/13
- * Time: 2:24 AM
- * To change this template use File | Settings | File Templates.
- */
+
 public class GenericBTSDriver {
     public static void main(String[] args) throws IOException, ClassNotFoundException, InterruptedException {
         Job conf = new Job();

@@ -15,8 +15,9 @@ public class BTSLogTrafficLogTableCreator implements ITrafficLogTable {
     public void createTableIfNotCreated (String dateSuffix)
             throws IOException {
         //Is this a good idea to create separate HBase tables per day ??
-        HTableDescriptor htd = new HTableDescriptor(TRAFFIC_INFO_TABLE_NAME_PREFIX + "_"+
-                dateSuffix);
+        //Keeping all data in single table for now
+        HTableDescriptor htd = new HTableDescriptor(TRAFFIC_INFO_TABLE_NAME_PREFIX); // + "_"+
+                //dateSuffix);
         HColumnDescriptor hcd = new HColumnDescriptor(TRAFFIC_INFO_COLUMN_FAMILY);
         htd.addFamily(hcd);
 

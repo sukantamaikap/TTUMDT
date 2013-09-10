@@ -25,9 +25,6 @@ public class GenericBTSIDIMSIReducer
         String dateFromKey = keyString.substring(10,18);
         String btsId = keyString.substring(0,10);
 
-        //ToDo : Investigate -> is this a good idea to populate table from hadoop reducer directly ?
-        //ToDo : or will it be good to dump the output of mr in HDFS and load the same to HBase table from HDFS
-
         // create the table
         BTSLogTrafficLogTableCreator tableCreator = new BTSLogTrafficLogTableCreator();
         tableCreator.createTableIfNotCreated(dateFromKey);
@@ -36,8 +33,6 @@ public class GenericBTSIDIMSIReducer
         for (Text value : values) {
                 entries.add(value.toString());
         }
-        //ToDo : remove writing if not needed
-        //context.write(key,new Text(entries.toString()));
 
         // Load the table in HBase
         TrafficLogTableLoader trafficLogTableLoader = new TrafficLogTableLoader();

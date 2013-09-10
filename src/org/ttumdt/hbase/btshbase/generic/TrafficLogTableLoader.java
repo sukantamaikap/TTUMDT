@@ -15,25 +15,25 @@ import java.util.List;
  */
 public class TrafficLogTableLoader implements ITrafficLogTable {
 
-    public void loadTable (String tableNameSuffix, String key,
+    public void loadTable (String keyDate, String keyBTSId,
                            List<String> values, Reducer.Context context)
             throws IOException, InterruptedException {
 
         ImmutableBytesWritable putTable = new ImmutableBytesWritable(Bytes.
-                toBytes(TRAFFIC_INFO_TABLE_NAME_PREFIX + "_" + tableNameSuffix));
+                toBytes(TRAFFIC_INFO_TABLE_NAME_PREFIX));// + "_" + keyDate));
 
         for(String value : values) {
             final String imsi = value.substring(0,15);
             final String timeStamp = value.substring(16, 21);
 
-            byte[] putKey = Bytes.toBytes(key);
+            byte[] putKey = Bytes.toBytes(keyBTSId+keyDate);
             Put put = new Put(putKey);
 
             byte[] putFamily = Bytes.toBytes(TRAFFIC_INFO_COLUMN_FAMILY);
 
             // qualifier btsId
             byte[] putQualifier = Bytes.toBytes(KEY_TRAFFIC_INFO_TABLE);
-            byte[] putValue = Bytes.toBytes(key);
+            byte[] putValue = Bytes.toBytes(keyBTSId);
             put.add(putFamily, putQualifier, putValue);
 
             // qualifier imsi
