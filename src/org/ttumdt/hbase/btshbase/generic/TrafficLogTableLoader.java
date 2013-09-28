@@ -20,7 +20,7 @@ public class TrafficLogTableLoader implements ITrafficLogTable {
             throws IOException, InterruptedException {
 
         ImmutableBytesWritable putTable = new ImmutableBytesWritable(Bytes.
-                toBytes(TRAFFIC_INFO_TABLE_NAME_PREFIX));// + "_" + keyDate));
+                toBytes(TRAFFIC_INFO_TABLE_NAME));// + "_" + keyDate));
 
         for(String value : values) {
             final String imsi = value.substring(0,15);
@@ -32,7 +32,7 @@ public class TrafficLogTableLoader implements ITrafficLogTable {
             byte[] putFamily = Bytes.toBytes(TRAFFIC_INFO_COLUMN_FAMILY);
 
             // qualifier btsId
-            byte[] putQualifier = Bytes.toBytes(KEY_TRAFFIC_INFO_TABLE);
+            byte[] putQualifier = Bytes.toBytes(KEY_TRAFFIC_INFO_TABLE_BTS_ID);
             byte[] putValue = Bytes.toBytes(keyBTSId);
             put.add(putFamily, putQualifier, putValue);
 
