@@ -35,6 +35,15 @@ public class GenericBTSIDIMSIMapper extends
         WrongDate
     }
 
+    private final int BASE_ID_START_INDEX = 0;
+    private final int BASE_ID_END_INDEX = 10;
+    private final int DATE_START_INDEX = 43;
+    private final int DATE_END_INDEX = 51;
+    private final int IMSI_START_INDEX = 28;
+    private final int IMSI_END_INDEX = 43;
+    private final int TIME_STAMP_START_INDEX = 51;
+    private final int TIME_STAMP_END_INDEX = 57;
+
     private GenericErrorHandler genericErrorHandler = new GenericErrorHandler();
 
     /**
@@ -51,13 +60,14 @@ public class GenericBTSIDIMSIMapper extends
         //ToDo : Rewrite error handling
         if(genericErrorHandler.checkCompleteLog(line))
         {
-            String btsId = line.substring(0,10);
+            String btsId = line.substring(BASE_ID_START_INDEX,BASE_ID_END_INDEX);
             if(genericErrorHandler.checkValidBTSID(btsId)) {
-                String date = line.substring(43,51);
+                String date = line.substring(DATE_START_INDEX,DATE_END_INDEX);
                 if(genericErrorHandler.checkValidDate(date)){
-                    String imsi = line.substring(28,43);
+                    String imsi = line.substring(IMSI_START_INDEX,IMSI_END_INDEX);
                     if(genericErrorHandler.checkValidIMSI(imsi)) {
-                        String timeStamp = line.substring(51,57);
+                        String timeStamp = line.substring(TIME_STAMP_START_INDEX,
+                                TIME_STAMP_END_INDEX);
                         if(genericErrorHandler.checkValidTimeStamp(timeStamp)) {
                             context.write(new Text(btsId + date), new Text(imsi+timeStamp));
                         }

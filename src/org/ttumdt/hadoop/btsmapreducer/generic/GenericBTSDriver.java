@@ -13,7 +13,8 @@ import java.io.IOException;
 
 
 public class GenericBTSDriver {
-    public static void main(String[] args) throws IOException, ClassNotFoundException, InterruptedException {
+    public static void main(String[] args)
+            throws IOException, ClassNotFoundException, InterruptedException {
         Job conf = new Job();
         conf.setJobName("BTSIdIMPSMR");
 

@@ -15,30 +15,31 @@ import java.util.List;
  */
 public class TrafficLogTableLoader implements ITrafficLogTable {
 
-    public void loadTable (String keyDate, String keyBTSId,
+    private final int IMSI_START_INDEX = 0;
+    private final int IMSI_END_INDEX = 15;
+    private final int TIMESTAMP_START_INDEX = 15;
+    private final int TIMESTAMP_END_INDEX = 21;
+
+    public void loadTable (String keyString,
                            List<String> values, Reducer.Context context)
             throws IOException, InterruptedException {
 
         ImmutableBytesWritable putTable = new ImmutableBytesWritable(Bytes.
-                toBytes(TRAFFIC_INFO_TABLE_NAME));// + "_" + keyDate));
+                toBytes(TRAFFIC_INFO_TABLE_NAME));
 
         for(String value : values) {
-            final String imsi = value.substring(0,15);
-            final String timeStamp = value.substring(16, 21);
+            final String imsi = value.substring(IMSI_START_INDEX,IMSI_END_INDEX);
+            final String timeStamp = value.substring(TIMESTAMP_START_INDEX,
+                    TIMESTAMP_END_INDEX);
 
-            byte[] putKey = Bytes.toBytes(keyBTSId+keyDate);
+            byte[] putKey = Bytes.toBytes(keyString);
             Put put = new Put(putKey);
 
             byte[] putFamily = Bytes.toBytes(TRAFFIC_INFO_COLUMN_FAMILY);
 
-            // qualifier btsId
-            byte[] putQualifier = Bytes.toBytes(KEY_TRAFFIC_INFO_TABLE_BTS_ID);
-            byte[] putValue = Bytes.toBytes(keyBTSId);
-            put.add(putFamily, putQualifier, putValue);
-
             // qualifier imsi
-            putQualifier = Bytes.toBytes(COLUMN_IMSI);
-            putValue = Bytes.toBytes(imsi);
+            byte[] putQualifier = Bytes.toBytes(COLUMN_IMSI);
+            byte[] putValue = Bytes.toBytes(imsi);
             put.add(putFamily, putQualifier, putValue);
 
             // qualifier brand

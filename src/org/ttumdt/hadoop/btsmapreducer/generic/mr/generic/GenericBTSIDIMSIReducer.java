@@ -12,18 +12,33 @@ import java.util.List;
 
 /**
  * Generic Reducer for generic assumed log
+ * The Mapper churns out data in the below format :
+ ***********************************************
+ *  Keys :
+ *  Field : Length
+ *  BITS_ID :   10
+ *  DATE : 8
+ *
+ *  Values:
+ *  Field : Length
+ *  IMSI : 15
+ *  TIME_STAMP : 6
+ ***********************************************
  */
 public class GenericBTSIDIMSIReducer
         extends Reducer<Text, Text, Text, Text>
         implements IGenericBTSLog {
 
+    private final int DATE_START_INDEX = 10;
+    private final int DATE_END_INDEX = 18;
+
     @Override
     public void reduce (Text key, Iterable<Text> values, Context context)
             throws IOException, InterruptedException {
+
         String keyString = key.toString();
-        // Key length is BTSID + DATE = 18 character long
-        String dateFromKey = keyString.substring(10,18);
-        String btsId = keyString.substring(0,10);
+
+        String dateFromKey = keyString.substring(DATE_START_INDEX,DATE_END_INDEX);
 
         // create the table
         BTSLogTrafficLogTableCreator tableCreator = new BTSLogTrafficLogTableCreator();
@@ -36,6 +51,6 @@ public class GenericBTSIDIMSIReducer
 
         // Load the table in HBase
         TrafficLogTableLoader trafficLogTableLoader = new TrafficLogTableLoader();
-        trafficLogTableLoader.loadTable(dateFromKey, btsId, entries, context);
+        trafficLogTableLoader.loadTable(keyString, entries, context);
     }
 }

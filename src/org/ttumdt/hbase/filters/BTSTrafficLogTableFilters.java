@@ -24,8 +24,8 @@ import java.util.Set;
 public class BTSTrafficLogTableFilters implements ITrafficLogTable {
 
     private static Configuration conf = null;
-    private byte[] columnFamily = Bytes.toBytes(TRAFFIC_INFO_COLUMN_FAMILY);
-    private byte[] qualifier= Bytes.toBytes(COLUMN_IMSI);
+    private final byte[] columnFamily = Bytes.toBytes(TRAFFIC_INFO_COLUMN_FAMILY);
+    private final byte[] qualifier= Bytes.toBytes(COLUMN_IMSI);
 
     public BTSTrafficLogTableFilters () {
         conf = HBaseConfiguration.create();
@@ -37,7 +37,7 @@ public class BTSTrafficLogTableFilters implements ITrafficLogTable {
      * @param btsId : btsId for which the query has to run
      * @param startTime : start time for which the query has to run
      * @param endTime : end time for which the query has to run
-     * @return returns IMSIs as list of Strings
+     * @return returns IMSIs as set of Strings
      * @throws IOException
      */
     public Set<String> getInfoPerBTSID(String btsId, String date,
@@ -93,7 +93,6 @@ public class BTSTrafficLogTableFilters implements ITrafficLogTable {
                 .asList((Filter)singleColumnValueFilterBTSId,
                        singleColumnValueFilterStartTime, singleColumnValueFilterEndTime));
         return filter;
-
     }
 
 
@@ -102,6 +101,4 @@ public class BTSTrafficLogTableFilters implements ITrafficLogTable {
         Set<String> imsis= flt.getInfoPerBTSID("AMCD000784", "26082013","104092","104095");
         System.out.println(imsis.toString());
     }
-
-
 }
