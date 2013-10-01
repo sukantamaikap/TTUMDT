@@ -6,10 +6,7 @@ import org.apache.hadoop.hbase.client.HTable;
 import org.apache.hadoop.hbase.client.Result;
 import org.apache.hadoop.hbase.client.ResultScanner;
 import org.apache.hadoop.hbase.client.Scan;
-import org.apache.hadoop.hbase.filter.CompareFilter;
-import org.apache.hadoop.hbase.filter.Filter;
-import org.apache.hadoop.hbase.filter.FilterList;
-import org.apache.hadoop.hbase.filter.SingleColumnValueFilter;
+import org.apache.hadoop.hbase.filter.*;
 import org.apache.hadoop.hbase.util.Bytes;
 import org.ttumdt.hbase.btshbase.ITrafficLogTable;
 
@@ -67,6 +64,10 @@ public class BTSTrafficLogTableFilters implements ITrafficLogTable {
         return imsis;
     }
 
+    //ToDo : Figure out how valid is this filter code?? How comparison happens
+    // with eqaul or grater than equal etc
+
+
     private Filter prepFilter (String btsId, String date,
                                String startTime, String endTime)
     {
@@ -74,10 +75,8 @@ public class BTSTrafficLogTableFilters implements ITrafficLogTable {
         byte[] timeStamp = Bytes.toBytes(COLUMN_TIMESTAMP);
 
         // filter to build -> where BTS_ID = <<btsId>> and Date = <<date>>
-        SingleColumnValueFilter singleColumnValueFilterBTSId =
-                new SingleColumnValueFilter
-                        (columnFamily, tableKey, CompareFilter.CompareOp.EQUAL,
-                                Bytes.toBytes(btsId+date));
+        RowFilter keyFilter = new RowFilter(CompareFilter.CompareOp.EQUAL,
+                new BinaryComparator(Bytes.toBytes(btsId+date)));
 
         // filter to build -> where timeStamp >= startTime
         SingleColumnValueFilter singleColumnValueFilterStartTime =
@@ -89,10 +88,10 @@ public class BTSTrafficLogTableFilters implements ITrafficLogTable {
                 new SingleColumnValueFilter(columnFamily, timeStamp,
                         CompareFilter.CompareOp.LESS_OR_EQUAL,Bytes.toBytes(endTime));
 
-        FilterList filter = new FilterList(FilterList.Operator.MUST_PASS_ALL, Arrays
-                .asList((Filter)singleColumnValueFilterBTSId,
+        FilterList filterList = new FilterList(FilterList.Operator.MUST_PASS_ALL, Arrays
+                .asList((Filter)keyFilter,
                        singleColumnValueFilterStartTime, singleColumnValueFilterEndTime));
-        return filter;
+        return filterList;
     }
 
 

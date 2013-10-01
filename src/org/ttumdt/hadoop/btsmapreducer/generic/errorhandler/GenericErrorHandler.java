@@ -2,13 +2,6 @@ package org.ttumdt.hadoop.btsmapreducer.generic.errorhandler;
 
 import org.ttumdt.hadoop.btsmapreducer.generic.IBTSLogErrorHandler;
 
-/**
- * Created with IntelliJ IDEA.
- * User: cloudera
- * Date: 8/27/13
- * Time: 6:59 AM
- * To change this template use File | Settings | File Templates.
- */
 public class GenericErrorHandler implements IBTSLogErrorHandler {
     /**
      * We are assuming the below log format for BTS logs :
