@@ -4,6 +4,7 @@ import org.apache.hadoop.hbase.client.Put;
 import org.apache.hadoop.hbase.io.ImmutableBytesWritable;
 import org.apache.hadoop.hbase.util.Bytes;
 import org.apache.hadoop.mapreduce.Reducer;
+import org.apache.log4j.Level;
 import org.ttumdt.hbase.btshbase.ITrafficLogTable;
 
 import java.io.IOException;
@@ -20,12 +21,20 @@ public class TrafficLogTableLoader implements ITrafficLogTable {
     private final int TIMESTAMP_START_INDEX = 15;
     private final int TIMESTAMP_END_INDEX = 21;
 
+
+    public TrafficLogTableLoader ()
+    {
+        LOG.setLevel(Level.ALL);
+    }
+
     public void loadTable (String keyString,
                            List<String> values, Reducer.Context context)
             throws IOException, InterruptedException {
+        LOG.info("*********************Loading TrafficLog table for key : " + keyString);
 
         ImmutableBytesWritable putTable = new ImmutableBytesWritable(Bytes.
                 toBytes(TRAFFIC_INFO_TABLE_NAME));
+        //int i =0;
 
         for(String value : values) {
             final String imsi = value.substring(IMSI_START_INDEX,IMSI_END_INDEX);
@@ -46,6 +55,9 @@ public class TrafficLogTableLoader implements ITrafficLogTable {
             putQualifier = Bytes.toBytes(COLUMN_TIMESTAMP);
             putValue = Bytes.toBytes(timeStamp);
             put.add(putFamily, putQualifier, putValue);
+
+            LOG.info("Loading IMSI : " + imsi);
+            LOG.info("Loading TimeStamp : " + timeStamp);
 
             context.write(putTable, put);
         }

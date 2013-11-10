@@ -3,6 +3,7 @@ package org.ttumdt.hbase.btshbase.generic;
 import org.apache.hadoop.conf.Configuration;
 import org.apache.hadoop.hbase.*;
 import org.apache.hadoop.hbase.client.HBaseAdmin;
+import org.apache.log4j.Level;
 import org.ttumdt.hbase.btshbase.ITrafficLogTable;
 
 import java.io.IOException;
@@ -11,6 +12,11 @@ import java.io.IOException;
  * Class to create HBase table
  */
 public class BTSLogTrafficLogTableCreator implements ITrafficLogTable {
+
+    public BTSLogTrafficLogTableCreator ()
+    {
+        LOG.setLevel(Level.ALL);
+    }
 
     public void createTableIfNotCreated (String dateSuffix)
             throws IOException {

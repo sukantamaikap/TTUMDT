@@ -46,7 +46,7 @@ public class GenericErrorHandler implements IBTSLogErrorHandler {
     @Override
     public boolean checkValidTimeStamp (String timeStamp) {
         return (timeStamp.length() == 6) &&
-                (Integer.parseInt(timeStamp)>99999) &&
+                (Integer.parseInt(timeStamp)>0) &&
                 (Integer.parseInt(timeStamp)<240001);
     }
 
