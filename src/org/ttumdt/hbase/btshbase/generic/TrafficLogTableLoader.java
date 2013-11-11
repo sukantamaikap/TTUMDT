@@ -34,14 +34,16 @@ public class TrafficLogTableLoader implements ITrafficLogTable {
 
         ImmutableBytesWritable putTable = new ImmutableBytesWritable(Bytes.
                 toBytes(TRAFFIC_INFO_TABLE_NAME));
-        //int i =0;
+        // i is used as an index for the RowKey
+        // ToDo : Figure out a better way to handle this
+        int i =0;
 
         for(String value : values) {
             final String imsi = value.substring(IMSI_START_INDEX,IMSI_END_INDEX);
             final String timeStamp = value.substring(TIMESTAMP_START_INDEX,
                     TIMESTAMP_END_INDEX);
 
-            byte[] putKey = Bytes.toBytes(keyString);
+            byte[] putKey = Bytes.toBytes(keyString + i);
             Put put = new Put(putKey);
 
             byte[] putFamily = Bytes.toBytes(TRAFFIC_INFO_COLUMN_FAMILY);

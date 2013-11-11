@@ -7,7 +7,10 @@ import org.apache.hadoop.hbase.client.Result;
 import org.apache.hadoop.hbase.client.ResultScanner;
 import org.apache.hadoop.hbase.client.Scan;
 import org.apache.hadoop.hbase.filter.*;
+import org.apache.hadoop.hbase.mapreduce.MultiTableOutputFormat;
 import org.apache.hadoop.hbase.util.Bytes;
+import org.apache.log4j.Level;
+import org.apache.log4j.Logger;
 import org.ttumdt.hbase.btshbase.ITrafficLogTable;
 
 import java.io.IOException;
@@ -23,8 +26,10 @@ public class BTSTrafficLogTableFilters implements ITrafficLogTable {
     private static Configuration conf = null;
     private final byte[] columnFamily = Bytes.toBytes(TRAFFIC_INFO_COLUMN_FAMILY);
     private final byte[] qualifier= Bytes.toBytes(COLUMN_IMSI);
+    public final Logger LOG = Logger.getLogger(MultiTableOutputFormat.class);
 
     public BTSTrafficLogTableFilters () {
+        LOG.setLevel(Level.ALL);
         conf = HBaseConfiguration.create();
         //conf.addResource();
     }
@@ -65,7 +70,7 @@ public class BTSTrafficLogTableFilters implements ITrafficLogTable {
     }
 
     //ToDo : Figure out how valid is this filter code?? How comparison happens
-    // with eqaul or grater than equal etc
+    // with equal or grater than equal etc
 
 
     private Filter prepFilter (String btsId, String date,
@@ -76,8 +81,8 @@ public class BTSTrafficLogTableFilters implements ITrafficLogTable {
 
         // filter to build -> where BTS_ID = <<btsId>> and Date = <<date>>
         RowFilter keyFilter = new RowFilter(CompareFilter.CompareOp.EQUAL,
-                new BinaryComparator(Bytes.toBytes(btsId+date)));
-
+                //new BinaryComparator(Bytes.toBytes(btsId+date)));
+                new SubstringComparator(btsId+date));
         // filter to build -> where timeStamp >= startTime
         SingleColumnValueFilter singleColumnValueFilterStartTime =
                 new SingleColumnValueFilter(columnFamily, timeStamp,
@@ -97,7 +102,8 @@ public class BTSTrafficLogTableFilters implements ITrafficLogTable {
 
     public static void main(String[] args) throws IOException {
         BTSTrafficLogTableFilters flt = new BTSTrafficLogTableFilters();
-        Set<String> imsis= flt.getInfoPerBTSID("AMCD000784", "26082013","104092","104095");
+        Set<String> imsis= flt.getInfoPerBTSID("AMCD000784", "26082013","090000","100000");
         System.out.println(imsis.toString());
+        System.out.println("*************************IMSI count : " + imsis.size());
     }
 }
