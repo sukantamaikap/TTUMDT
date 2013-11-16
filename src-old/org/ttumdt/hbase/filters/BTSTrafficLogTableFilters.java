@@ -14,7 +14,9 @@ import org.apache.log4j.Logger;
 import org.ttumdt.hbase.btshbase.ITrafficLogTable;
 
 import java.io.IOException;
-import java.util.*;
+import java.util.Arrays;
+import java.util.HashSet;
+import java.util.Set;
 
 /**
  * Class for all generic filters tied to generic trafficLog
@@ -23,8 +25,7 @@ public class BTSTrafficLogTableFilters implements ITrafficLogTable {
 
     private static Configuration conf = null;
     private final byte[] columnFamily = Bytes.toBytes(TRAFFIC_INFO_COLUMN_FAMILY);
-    private final byte[] qualifierIMSI = Bytes.toBytes(COLUMN_IMSI);
-    private final byte[] qualifierTimeStamp = Bytes.toBytes(COLUMN_TIMESTAMP);
+    private final byte[] qualifier= Bytes.toBytes(COLUMN_IMSI);
     public final Logger LOG = Logger.getLogger(MultiTableOutputFormat.class);
 
     public BTSTrafficLogTableFilters () {
@@ -41,19 +42,16 @@ public class BTSTrafficLogTableFilters implements ITrafficLogTable {
      * @return returns IMSIs as set of Strings
      * @throws IOException
      */
-    public Map<String, String> getInfoPerBTSID(String btsId, String date,
+    public Set<String> getInfoPerBTSID(String btsId, String date,
                                        String startTime, String endTime)
             throws IOException {
-        //Set<String> imsis = new HashSet<String>();
-
-        Map<String, String> imsiMap = new HashMap<String, String>();
+        Set<String> imsis = new HashSet<String>();
 
         //ToDo : better exception handling
         HTable table = new HTable(conf, TRAFFIC_INFO_TABLE_NAME);
         Scan scan = new Scan();
 
-        //scan.addColumn(columnFamily, qualifierIMSI);
-        scan.addFamily(columnFamily);
+        scan.addColumn(columnFamily,qualifier);
         scan.setFilter(prepFilter(btsId, date, startTime, endTime));
 
         // filter to build where timestamp
@@ -62,22 +60,13 @@ public class BTSTrafficLogTableFilters implements ITrafficLogTable {
         ResultScanner resultScanner = table.getScanner(scan);
 
         while ((result = resultScanner.next())!= null) {
-            //byte[] obtainedColumn = result.getValue(columnFamily, qualifierIMSI);
-            //imsis.add(Bytes.toString(obtainedColumn));
-
-            byte[] obtainedColumnIMSI = result.getValue(columnFamily, qualifierIMSI);
-            byte[] obtainedColumnTimeStamp = result.getValue(columnFamily,
-                    qualifierTimeStamp);
-
-            //imsis.add(Bytes.toString(obtainedColumnTimeStamp));
-
-           imsiMap.put(Bytes.toString(obtainedColumnIMSI),
-                    Bytes.toString(obtainedColumnTimeStamp));
+            byte[] obtainedColumn = result.getValue(columnFamily,qualifier);
+            imsis.add(Bytes.toString(obtainedColumn));
         }
 
         resultScanner.close();
-        //return  imsis;
-        return imsiMap;
+
+        return imsis;
     }
 
     //ToDo : Figure out how valid is this filter code?? How comparison happens
@@ -113,7 +102,7 @@ public class BTSTrafficLogTableFilters implements ITrafficLogTable {
 
     public static void main(String[] args) throws IOException {
         BTSTrafficLogTableFilters flt = new BTSTrafficLogTableFilters();
-        Map<String, String> imsis= flt.getInfoPerBTSID("AMCD000784", "26082013","060000","090000");
+        Set<String> imsis= flt.getInfoPerBTSID("AMCD000784", "26082013","090000","100000");
         System.out.println(imsis.toString());
         System.out.println("*************************IMSI count : " + imsis.size());
     }

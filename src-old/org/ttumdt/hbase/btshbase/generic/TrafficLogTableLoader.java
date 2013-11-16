@@ -43,7 +43,7 @@ public class TrafficLogTableLoader implements ITrafficLogTable {
             final String timeStamp = value.substring(TIMESTAMP_START_INDEX,
                     TIMESTAMP_END_INDEX);
 
-            byte[] putKey = Bytes.toBytes(keyString + i++);
+            byte[] putKey = Bytes.toBytes(keyString + i);
             Put put = new Put(putKey);
 
             byte[] putFamily = Bytes.toBytes(TRAFFIC_INFO_COLUMN_FAMILY);

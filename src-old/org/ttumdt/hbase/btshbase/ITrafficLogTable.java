@@ -10,7 +10,7 @@ public interface ITrafficLogTable {
     final String KEY_TRAFFIC_INFO_TABLE_BTS_ID = "BTS_ID";
     final String KEY_TRAFFIC_INFO_TABLE_DATE = "DATE";
     final String COLUMN_IMSI = "IMSI";
-    final String COLUMN_TIMESTAMP = "TS";
+    final String COLUMN_TIMESTAMP = "TIME_STAMP";
 
     public final Logger LOG = Logger.getLogger(MultiTableOutputFormat.class);
 }
